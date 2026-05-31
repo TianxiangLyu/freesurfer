@@ -470,3 +470,8 @@ utils/xmlToHtml
 # testdata
 */testdata
 Testing
+
+fs-env/*
+fs-packages/*
+build/*
+install/*

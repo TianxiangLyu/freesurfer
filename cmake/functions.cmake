@@ -193,7 +193,7 @@ function(install_append_help SCRIPT HELPTEXT DESTINATION)
     message(STATUS \"Appending helptext: ${CMAKE_INSTALL_PREFIX}/${DESTINATION}/${SCRIPT}\")
     execute_process(
       COMMAND bash -c \"
-        ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/utils --target fsPrintHelp &&
+        ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target fsPrintHelp &&
         ${CMAKE_BINARY_DIR}/utils/fsPrintHelp ${CMAKE_CURRENT_SOURCE_DIR}/${HELPTEXT} >> ${CMAKE_INSTALL_PREFIX}/${DESTINATION}/${SCRIPT}\"
       OUTPUT_QUIET
       RESULT_VARIABLE retcode
@@ -356,4 +356,3 @@ function(get_package_dir PACKAGENAME PACKAGEDIR)
     #message(STATUS \"get package ${PACKAGENAME} directory OUTPUT_VARIABLE ${PACKAGEDIR}\")
     )
 endfunction()
-

@@ -20,7 +20,8 @@
 #ifndef AFFINE_H
 #define AFFINE_H
 
-#if (__GNUC__ > 3) && !defined(HAVE_MCHECK) && !defined(ARM64)    // mcheck does not understand _mm_alloc et. al.
+#if (__GNUC__ > 3) && !defined(HAVE_MCHECK) && \
+    (defined(__i386__) || defined(__x86_64__) || defined(_M_IX86) || defined(_M_X64))    // mcheck does not understand _mm_alloc et. al.
 #define AFFINE_MATRIX_USE_SSE
 #endif
 

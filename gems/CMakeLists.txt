@@ -30,8 +30,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${GEMS_RUNTIME_PATH})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${GEMS_RUNTIME_PATH})
 
 set(CMAKE_CXX_STANDARD 11)
-if(NOT APPLE_ARM64) 
-   set(CMAKE_CXX_FLAGS "-fPIC -fpermissive -msse2 -mfpmath=sse")
+set(CMAKE_CXX_FLAGS "-fPIC -fpermissive")
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|AMD64|i[3-6]86)$")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2 -mfpmath=sse")
 endif()
 
 add_compile_options(-Wno-inconsistent-missing-override -Wno-self-assign-field)

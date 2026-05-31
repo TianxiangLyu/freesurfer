@@ -1,6 +1,6 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 
-set -e
+set -ex
 
 [ "$#" != "1" ] && echo "error: usage: build.sh <prefix>" && exit 1
 INSTALL_DIR="$1"
@@ -50,7 +50,5 @@ cmake ../ITK \
   -DModule_AnisotropicDiffusionLBR:BOOL=ON \
   -DBUILD_TESTING:BOOL=OFF
 
-# cmake --build . --target all -j 8
-# Preserve log output order, maybe easier to check for errors
-cmake --build . --target all -j1
+cmake --build . --target all -j 16
 cmake --build . --target install

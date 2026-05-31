@@ -19,7 +19,6 @@
 #ifndef AFFINE_HPP
 #define AFFINE_HPP
 
-#include <xmmintrin.h>
 #include <cstring>
 #include <iostream>
 #include <iomanip>
@@ -27,6 +26,10 @@
 #include "matrix.h"
 
 #include "affine.h"
+
+#ifdef AFFINE_MATRIX_USE_SSE
+#include <xmmintrin.h>
+#endif
 
 
 namespace Freesurfer
@@ -238,6 +241,7 @@ public:
 
 
 //! Specialise matrix-vector for float and use SSE
+#ifdef AFFINE_MATRIX_USE_SSE
 template<>
 AffineVector<float>
 AffineMatrix<float>::operator*( const AffineVector<float>& v ) const
@@ -270,8 +274,10 @@ AffineMatrix<float>::operator*( const AffineVector<float>& v ) const
 
   return( res );
 }
+#endif
 
 //! Specialise matrix-matrix for float and use SSE
+#ifdef AFFINE_MATRIX_USE_SSE
 template<>
 AffineMatrix<float>
 AffineMatrix<float>::operator*( const AffineMatrix<float>& m ) const
@@ -316,6 +322,7 @@ AffineMatrix<float>::operator*( const AffineMatrix<float>& m ) const
   return( res );
 
 }
+#endif
 
 }
 

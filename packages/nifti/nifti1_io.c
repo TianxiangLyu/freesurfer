@@ -5589,6 +5589,13 @@ znzFile nifti_image_write_hdr_img(nifti_image *nim, int write_data, const char *
     return fp;                                                           \
   } while (0)
 
+#define ERREX_STATUS(msg)                                                \
+  do {                                                                   \
+    fprintf(stderr, "** ERROR: nifti_image_write_hdr_img: %s\n", (msg)); \
+    if (imgfile) *imgfile = fp;                                          \
+    return 1;                                                            \
+  } while (0)
+
 /* ----------------------------------------------------------------------*/
 /*! This writes the header (and optionally the image data) to file
  *
@@ -5626,12 +5633,12 @@ static int nifti_image_write_engine(nifti_image *nim, int write_opts,
    write_data = write_opts & 1;  /* just separate the bits now */
    leave_open = write_opts & 2;
 
-   if( ! nim || ! imgfile                 ) ERREX("NULL input") ;
-   if( ! nifti_validfilename(nim->fname)  ) ERREX("bad fname input") ;
-   if( write_data && ! nim->data && ! NBL ) ERREX("no image data") ;
+   if( ! nim || ! imgfile                 ) ERREX_STATUS("NULL input") ;
+   if( ! nifti_validfilename(nim->fname)  ) ERREX_STATUS("bad fname input") ;
+   if( write_data && ! nim->data && ! NBL ) ERREX_STATUS("no image data") ;
 
    if( write_data && NBL && ! nifti_NBL_matches_nim(nim, NBL) )
-      ERREX("NBL does not match nim");
+      ERREX_STATUS("NBL does not match nim");
 
    nifti_set_iname_offset(nim);
 
@@ -5715,7 +5722,7 @@ static int nifti_image_write_engine(nifti_image *nim, int write_opts,
          if( g_opts.debug > 2 )
             fprintf(stderr,"+d opening img file '%s'\n", nim->iname);
          fp = znzopen( nim->iname , opts , nifti_is_gzfile(nim->iname) ) ;
-         if( znz_isnull(fp) ) ERREX("cannot open image file") ;
+         if( znz_isnull(fp) ) ERREX_STATUS("cannot open image file") ;
       }
    }
 
@@ -5728,6 +5735,8 @@ static int nifti_image_write_engine(nifti_image *nim, int write_opts,
 
    return 0;
 }
+
+#undef ERREX_STATUS
 
 /* ----------------------------------------------------------------------*/
 /*! This writes the header (and optionally the image data) to file
